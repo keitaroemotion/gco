@@ -11,6 +11,6 @@
 
 `$ gco`
 
-## you can filter your branches by adding argument like:
+you can filter your branches by adding argument like:
 `$ gco [term]`
 
