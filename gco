@@ -17,6 +17,6 @@ end
 print "[which?] "
 option = $stdin.gets.chomp
 
-abort if option == "q"
+abort if option == "q" || option.empty?
 
 system "git co #{branches[option.to_i]}"
