@@ -1,1 +1,2 @@
+gem install colorize
 cp gco /usr/local/bin
