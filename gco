@@ -14,16 +14,23 @@ end
 
 current_branch = branches.select{|branch| branch.start_with?("*")}[0]
 
-branches.each_with_index do |branch, index|
-  if branch == current_branch
-    branch = branch.green
+def list_branches(branches, current_branch)
+  branches.each_with_index do |branch, index|
+    if branch == current_branch
+      branch = branch.green
+    end
+    puts "[#{index}] #{branch}"
   end
-  puts "[#{index}] #{branch}"
-end
 
-print "[which?] "
-option = $stdin.gets.chomp
+  print "[which?] "
+  option = $stdin.gets.chomp
 
-abort if option == "q" || option.empty?
+  abort if option == "q" || option.empty?
+  if /^[0-9]/.match(option).present?
+    list_branches(branches.select{|b| b.include?(option)}, current_branch)
+  else
+    system "git co #{branches[option.to_i]}"
+  end
+end    
 
-system "git co #{branches[option.to_i]}"
+list_branches branches, current_branch
