@@ -26,7 +26,8 @@ def list_branches(branches, current_branch)
   option = $stdin.gets.chomp
 
   abort if option == "q" || option.empty?
-  if /^[0-9]/.match(option).present?
+  
+  unless /[^0-9]/.match(option).nil?
     list_branches(branches.select{|b| b.include?(option)}, current_branch)
   else
     system "git co #{branches[option.to_i]}"
