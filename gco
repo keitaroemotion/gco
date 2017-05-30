@@ -37,8 +37,9 @@ end
 case key_word 
 when "-h", "--help", "help", "--h"
   puts
-  puts "gco [keyword] ... go to another branch"
-  puts "gco pull      ... pull and update the develop branch"
+  puts "gco [keyword]    ... go to another branch"
+  puts "gco pull [merge] ... pull and update the develop branch"
+  puts "                     if merge option added, the update will be merged."
   puts
 when "pull"
   result = system "git co develop"
@@ -48,6 +49,8 @@ when "pull"
     puts "checking out onto the #{current_branch}".green
     system "git co #{current_branch}"
   end  
+  if ARGV.include?("merge")
+  end
 else
   list_branches branches, current_branch
 end  
