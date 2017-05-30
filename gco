@@ -8,11 +8,11 @@ key_word = $*[0]
 
 branches = p.split("\n")
 
+current_branch = branches.select{|branch| branch.start_with?("*")}[0].gsub("* ", "")
+
 unless key_word.nil?
   branches = branches.select{|branch| branch.include?(key_word)}
 end  
-
-current_branch = branches.select{|branch| branch.start_with?("*")}[0]
 
 def list_branches(branches, current_branch)
   branches.each_with_index do |branch, index|
@@ -25,7 +25,7 @@ def list_branches(branches, current_branch)
   print "[which?] "
   option = $stdin.gets.chomp
 
-  abort if option == "q" || option.empty?
+  abort if option == "q"
   
   unless /[^0-9]/.match(option).nil?
     list_branches(branches.select{|b| b.include?(option)}, current_branch)
@@ -34,4 +34,20 @@ def list_branches(branches, current_branch)
   end
 end    
 
-list_branches branches, current_branch
+case key_word 
+when "-h", "--help", "help", "--h"
+  puts
+  puts "gco [keyword] ... go to another branch"
+  puts "gco pull      ... pull and update the develop branch"
+  puts
+when "pull"
+  result = system "git co develop"
+  if result
+    puts "pulling in develop ...".green
+    system "git pull"
+    puts "checking out onto the #{current_branch}".green
+    system "git co #{current_branch}"
+  end  
+else
+  list_branches branches, current_branch
+end  
