@@ -50,6 +50,9 @@ when "pull"
     system "git co #{current_branch}"
   end  
   if ARGV.include?("merge")
+    system "git merge develop"
+  elsif ARGV.include?("rebase")
+    system "git pull --rebase origin develop"
   end
 else
   list_branches branches, current_branch
