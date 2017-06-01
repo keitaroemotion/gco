@@ -22,6 +22,7 @@ you can update develop branch and go back to your current branch
 
 If you want automatically your branch merge develop branch after the dev branch updated, type the command as follows:
 
+
 `$ gco pull merge`
 
 
