@@ -40,8 +40,9 @@ when "-h", "--help", "help", "--h"
   puts "gco [keyword]    ... go to another branch"
   puts "gco pull [merge] ... pull and update the develop branch"
   puts "                     if merge option added, the update will be merged."
+  puts "gco retreat      ... kill the last commit"
   puts
-when "pull"
+when "pull", "pm"
   result = system "git co develop"
   if result
     puts "pulling in develop ...".green
@@ -49,11 +50,14 @@ when "pull"
     puts "checking out onto the #{current_branch}".green
     system "git co #{current_branch}"
   end  
-  if ARGV.include?("merge")
+  if ARGV.include?("merge") || ARGV.include?("pm")
     system "git merge develop"
   elsif ARGV.include?("rebase")
     system "git pull --rebase origin develop"
   end
+when "retreat"
+  system "git reset HEAD~"
+  system "git reset --hard"
 else
   list_branches branches, current_branch
 end  

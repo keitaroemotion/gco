@@ -24,6 +24,10 @@ If you want automatically your branch merge develop branch after the dev branch 
 
 `$ gco pull merge`
 
+
+You can undo the last commit by the following command:
+`$ gco retreat`
+
 # Donation
 
 I hope you search with the keyword "keita roimo" on the internet and look for the songs downloadable on line. These albums are available on iTunes, Amazon, Spotify, etc.
