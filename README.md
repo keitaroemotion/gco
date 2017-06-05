@@ -28,6 +28,10 @@ You can undo the last commit by the following command:
 
 `$ gco retreat`
 
+For just peeping into files of another branch, you can use:
+
+`$ gco show`
+
 # Donation
 
 I hope you search with the keyword "keita roimo" on the internet and look for the songs downloadable on line. These albums are available on iTunes, Amazon, Spotify, etc.

@@ -3,32 +3,39 @@
 require "colorize"
 
 
-def key_word 
-  $*[0]
-end  
+$key_word = $*[0]
 
-def branch
+def branch(show: false)
+  #
+  # these keyword filter has to be multiple later
+  #
+  if show
+    $key_word = $*[1]
+  end
+
   p = `git branch`
-
   branches = p.split("\n")
-
   current_branch = branches.select{|branch| branch.start_with?("*")}[0].gsub("* ", "")
-
-  unless key_word.nil?
-    branches = branches.select{|branch| branch.include?(key_word)}
+  unless $key_word.nil?
+    branches = branches.select{|branch| branch.include?($key_word)}
   end  
   [branches, current_branch]
 end  
 
 def get_branch(branches, current_branch)
+  if branches.size == 0
+    puts "\nbranch is empty\n\n"
+  end
   branches.each_with_index do |branch, index|
     if branch == current_branch
       branch = branch.green
     end
-    puts "[#{index}] #{branch}"
+    puts "[#{index.to_s.green}] #{branch}"
   end
-  print "[which?] "
-  $stdin.gets.chomp
+  print "[branch?] "
+  input = $stdin.gets.chomp
+  abort if input == "q"
+  branches[input.to_i]
 end
 
 def list_branches(branches, current_branch)
@@ -43,26 +50,46 @@ def list_branches(branches, current_branch)
   end
 end    
 
-def get_file(key_words)
-  matches = Dir["./**/*"].select do |file|
-    key_words.select do |key_word|
-      file.downcase.include?(key_word.downcase)
-    end.size == key_words
+def include?(file, key_words)
+  key_words.select do |key_word|
+    file.downcase.include?(key_word.downcase)
+  end.size == key_words.size
+end
+
+def num?(i)
+  /[^0-9]/.match(i).nil?
+end
+
+def get_file(key_words, files=[])
+  if files.size == 0
+    files = Dir["./**/*"]
   end
+  matches = files.select do |file|
+    include? file, key_words
+  end
+
   matches.each_with_index do |file, i|
-    puts "#{i} #{file}" 
+    puts "[#{i.to_s.cyan}] #{file}" 
   end
-  print "which? "
+  
+  abort "\n0 matches\n\n" if matches.size == 0
+  print "which file? "
   input = $stdin.gets.chomp
-  matches[input.to_i]
+  if num?(input)
+    return matches[input.to_i]
+  else
+    return get_file(input.split(" "))
+  end
 end
 
 def show(branches, current_branch, key_words)
   target_branch = get_branch(branches, current_branch)
-  "git show #{target_branch}:#{get_file(key_words)}"
+  command = "git show #{target_branch}:#{get_file(key_words)}"
+  puts command.green
+  system command
 end
 
-case key_word 
+case $key_word 
 when "-h", "--help", "help", "--h"
   puts
   puts "gco [keyword]    ... go to another branch"
@@ -72,7 +99,9 @@ when "-h", "--help", "help", "--h"
   puts "gco retreat      ... kill the last commit"
   puts
 when "show"
-  show branches, current_branch, ARGV[1..-1]
+  branches, current_branch = branch(show: true)
+  print "File: key_words: ".green
+  show branches, current_branch, $stdin.gets.chomp.strip.split(" ")
 when "pull", "pm"
   branches, current_branch = branch
   result = system "git co develop"
