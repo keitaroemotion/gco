@@ -30,7 +30,7 @@ def get_branch(branches, current_branch)
     puts "[#{index.to_s.green}] #{branch}"
   end
   print "[branch?] "
-  input = $stdin.gets.chomp
+  input = $stdin.gets.chomp.strip
   abort if input == "q"
   if num?(input)
     branches[input.to_i]
@@ -40,15 +40,14 @@ def get_branch(branches, current_branch)
 end
 
 def list_branches(branches, current_branch)
-  option = get_branch(branches, current_branch)
-
-  abort if option == "q"
-  
-  unless /[^0-9]/.match(option).nil?
-    list_branches(branches.select{|b| b.include?(option)}, current_branch)
-  else
-    system "git co #{branches[option.to_i]}"
-  end
+  br = get_branch(branches, current_branch)
+  # option = get_branch(branches, current_branch)
+  # abort if option == "q"
+  #unless /[^0-9]/.match(option).nil?
+  #   list_branches(branches.select{|b| b.include?(option)}, current_branch)
+  # else
+  system "git co #{br}"
+  #end
 end    
 
 def include?(file, key_words)
@@ -75,7 +74,7 @@ def get_file(key_words, files=[])
   
   abort "\n0 matches\n\n" if matches.size == 0
   print "which file? "
-  input = $stdin.gets.chomp
+  input = $stdin.gets.chomp.strip
   if num?(input)
     return matches[input.to_i]
   else
