@@ -97,6 +97,7 @@ when "-h", "--help", "help", "--h"
   puts "                     if merge option added, the update will be merged."
   puts "gco #{"pm".green}           ... same as 'gco pull merge'"
   puts "gco retreat      ... kill the last commit"
+  puts "gco show         ... look into the file in another branch"
   puts
 when "show"
   branches, current_branch = branch(show: true)
