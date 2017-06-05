@@ -23,9 +23,6 @@ def branch(show: false)
 end  
 
 def get_branch(branches, current_branch)
-  if branches.size == 0
-    puts "\nbranch is empty\n\n"
-  end
   branches.each_with_index do |branch, index|
     if branch == current_branch
       branch = branch.green
@@ -35,7 +32,11 @@ def get_branch(branches, current_branch)
   print "[branch?] "
   input = $stdin.gets.chomp
   abort if input == "q"
-  branches[input.to_i]
+  if num?(input)
+    branches[input.to_i]
+  else
+    get_branch(branches.select{|branch| branch.include?(input)}, current_branch)
+  end
 end
 
 def list_branches(branches, current_branch)
