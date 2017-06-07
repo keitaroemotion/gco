@@ -1,6 +1,6 @@
 # Git Checkout Easy Script
 
-Tons of git command operations sometimes make us sick: this script automates part of repetitive git commands relates to team-based development. With this you can reduce your time hanging around with git command. By the way, fuck people who install git on your IDE. I am not obliged to wipe the moron's ass. Meow. Thank you.
+Tons of git command operations sometimes make us sick: this script automates part of repetitive git commands relates to team-based development. With this you can reduce your time hanging around with git command.
 
 
 ## Installation 
