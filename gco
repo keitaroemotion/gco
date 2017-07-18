@@ -29,6 +29,12 @@ def get_branch(branches, current_branch)
     end
     puts "[#{index.to_s.green}] #{branch}"
   end
+
+  if branches.size == 1
+    puts "===> #{branches[0]}".green
+    return branches[0]
+  end
+
   print "[branch?] "
   input = $stdin.gets.chomp.strip
   abort if input == "q"
